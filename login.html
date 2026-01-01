@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #eef2f7, #d9e6f2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Centered card */
+    .box {
+      width: 350px;
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-size: 28px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+    }
+
+    .flash {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: #388E3C;
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .box {
+        width: 90%;
+        padding: 30px 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      input, button {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Login</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash" style="color: {% if category=='success' %}green{% else %}red{% endif %};">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+      <input name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button>Login</button>
+    </form>
+
+    <p><a href="/register">Create account</a></p>
+  </div>
+</body>
+</html>

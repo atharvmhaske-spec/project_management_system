@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Management</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #eef2f7, #d9e6f2);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        a.logout {
+            text-decoration: none;
+            color: #f44336;
+            font-weight: bold;
+            float: right;
+            margin-top: -35px;
+        }
+
+        a.logout:hover {
+            color: #d32f2f;
+        }
+
+        /* Flash messages */
+        .flash {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Form container */
+        .form-container {
+            background-color: #fff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-container input:focus,
+        .form-container select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76,175,80,0.5);
+            outline: none;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+
+        tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        /* Buttons inside table */
+        .btn {
+            padding: 8px 15px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn.update {
+            background-color: #2196F3;
+        }
+
+        .btn.update:hover {
+            background-color: #1976d2;
+        }
+
+        .btn.delete {
+            background-color: #f44336;
+        }
+
+        .btn.delete:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            table, th, td {
+                font-size: 14px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome, {{ username }}</h1>
+    <a href="/logout" class="logout">Logout</a>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash" style="color: {% if category=='success' %}green{% else %}red{% endif %};">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <!-- Add Project Form -->
+    <div class="form-container">
+        <h2>Add Project</h2>
+        <form method="POST" action="/add">
+            <input type="number" name="project_id" placeholder="Project ID" required>
+            <input type="text" name="project_name" placeholder="Project Name" required>
+            <input type="text" name="project_desc" placeholder="Project Description" required>
+            <select name="project_status">
+                <option value="Not Started">Not Started</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <input type="text" name="member1" placeholder="Member 1" required>
+            <input type="text" name="member2" placeholder="Member 2" required>
+            <button type="submit">Add Project</button>
+        </form>
+    </div>
+
+    <!-- Project List Table -->
+    <h2>All Projects</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Members</th>
+            <th>Actions</th>
+        </tr>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project['project_id'] }}</td>
+            <td><a href="/view/{{ project['project_id'] }}">{{ project['name'] }}</a></td>
+            <td>{{ project['description'] }}</td>
+            <td>
+                <form action="/update/{{ project['project_id'] }}" method="POST">
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="Not Started" {% if project['status']=='Not Started' %}selected{% endif %}>Not Started</option>
+                        <option value="In Progress" {% if project['status']=='In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Completed" {% if project['status']=='Completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </form>
+            </td>
+            <td>{{ project['member1'] }}, {{ project['member2'] }}</td>
+            <td>
+                <a href="/members/{{ project['project_id'] }}" class="btn update">Members</a>
+                <a href="/delete/{{ project['project_id'] }}" class="btn delete">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Members</title>
+    <style>
+        /* Reset some defaults */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Container card */
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            background-color: #f7f9fb;
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        li:hover {
+            background-color: #e0f7fa;
+            color: #00796b;
+            transform: translateX(5px);
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            li {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            a {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Project: {{ project['name'] }}</h1>
+        <h2>Group Members</h2>
+        <ul>
+            {% for member in members %}
+                <li>{{ member }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/">Back to Projects</a>
+    </div>
+</body>
+</html>
